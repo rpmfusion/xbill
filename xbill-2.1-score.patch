@@ -1,0 +1,23 @@
+diff -dur xbill-2.1.orig/Scorelist.c xbill-2.1.score/Scorelist.c
+--- xbill-2.1.orig/Scorelist.c	2001-10-21 10:39:47.000000000 +0200
++++ xbill-2.1.score/Scorelist.c	2008-12-27 15:06:14.000000000 +0100
+@@ -83,13 +83,15 @@
+ void
+ Scorelist_update() {
+ 	char str[500];
++	char temp[40];
+ 	int i;
+-	sprintf(str, "%s\n\n", "High Scores:");
+-	sprintf(str, "%s%-*s %6s %7s\n", str, NAMELEN,
+-		"Name", "Level", "Score");
++	strcpy(str, "High Scores:\n\n");
++	sprintf(temp, "%-*s %6s %7s\n", NAMELEN, "Name", "Level", "Score");
++	strcat(str, temp);
+ 	for (i = 0; i < SCORES; i++) {
+-		sprintf(str, "%s%-*s %6d %7d\n", str, NAMELEN,
++		sprintf(temp, "%-*s %6d %7d\n", NAMELEN,
+ 			scores[i].name, scores[i].level, scores[i].score);
++		strcat(str, temp);
+ 	}
+ 	UI_update_dialog(DIALOG_HIGHSCORE, str);
+ }

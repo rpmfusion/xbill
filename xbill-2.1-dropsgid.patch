@@ -1,0 +1,82 @@
+diff -dur xbill-2.1.orig/Game.c xbill-2.1/Game.c
+--- xbill-2.1.orig/Game.c	2001-10-30 19:28:27.000000000 +0100
++++ xbill-2.1/Game.c	2008-12-26 10:08:56.000000000 +0100
+@@ -304,6 +304,7 @@
+ 
+ int
+ main(int argc, char **argv) {
++	Scorelist_open();
+ 	srand(time(NULL));
+ 	parse_args(argc, argv);
+ 	UI_initialize(gui, &argc, argv);
+diff -dur xbill-2.1.orig/Scorelist.c xbill-2.1/Scorelist.c
+--- xbill-2.1.orig/Scorelist.c	2001-10-21 10:39:47.000000000 +0200
++++ xbill-2.1/Scorelist.c	2008-12-26 19:51:20.000000000 +0100
+@@ -1,6 +1,8 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <unistd.h>
++#include <sys/types.h>
+ 
+ #include "Scorelist.h"
+ #include "UI.h"
+@@ -16,16 +18,33 @@
+ 
+ static Score scores[SCORES];
+ 
++FILE *scorefile;
++
++void
++Scorelist_open() {
++        gid_t realgid;
++
++        /* Open the scoreboard file. */
++        scorefile = fopen(SCOREFILE, "r+");
++
++        /* Figure out who we really are. */
++        realgid = getgid();
++
++        /* This is where we drop our setuid/setgid privileges. */
++        if (setresgid(-1, realgid, realgid) != 0) {
++                perror("Could not drop setgid privileges.  Aborting.");
++                exit(1);
++        }
++}
++
+ void
+ Scorelist_read() {
+-	FILE *scorefile = fopen(SCOREFILE, "r");
+ 	int i;
+ 
+ 	if (scorefile != NULL) {
+ 		for (i = 0; i < SCORES; i++)
+ 			fscanf(scorefile, "%20s%d%d\n", scores[i].name,
+ 			       &scores[i].level, &scores[i].score);
+-		fclose(scorefile);
+ 	}
+ 	else {
+ 		for (i = 0; i < SCORES; i++) {
+@@ -38,10 +57,10 @@
+ 
+ void
+ Scorelist_write() {
+-	FILE *scorefile = fopen(SCOREFILE, "w");
+ 	int i;
+ 	if (scorefile == NULL)
+ 		return;
++	rewind(scorefile);
+ 	for (i = 0; i < SCORES; i++)
+ 		fprintf(scorefile, "%-*s %d %d\n", NAMELEN,
+ 			scores[i].name, scores[i].level, scores[i].score);
+diff -dur xbill-2.1.orig/Scorelist.h xbill-2.1/Scorelist.h
+--- xbill-2.1.orig/Scorelist.h	2001-10-21 10:39:47.000000000 +0200
++++ xbill-2.1/Scorelist.h	2008-12-26 19:11:22.000000000 +0100
+@@ -1,6 +1,7 @@
+ #ifndef SCORELIST_H
+ #define SCORELIST_H
+ 
++void Scorelist_open(void);
+ void Scorelist_read(void);
+ void Scorelist_write(void);
+ void Scorelist_recalc(const char *str, int level, int score);

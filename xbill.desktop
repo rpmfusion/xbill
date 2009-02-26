@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=xBill
+Comment=Stop Bill from loading his OS into all the computers
+Exec=xbill
+Icon=xbill
+Terminal=false
+Type=Application
+Categories=Game;ActionGame
+
