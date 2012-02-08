@@ -1,6 +1,6 @@
 Name:           xbill
 Version:        2.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 
 Group:          Amusements/Games
@@ -100,6 +100,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Wed Feb 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 2.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Thu Feb 26 2009 Andrea Musuruane <musuruan@gmail.com> 2.1-2
 - Updated icon cache scriptlets to be compliant to new guidelines
 
