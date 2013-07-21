@@ -1,6 +1,6 @@
 Name:           xbill
 Version:        2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 
 Group:          Amusements/Games
@@ -16,6 +16,8 @@ Patch1:         %{name}-2.1-hurd_logos.patch
 Patch2:         %{name}-2.1-score.patch
 Patch3:         %{name}-2.1-dropsgid.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  libtool
 
 BuildRequires:  gtk2-devel
 BuildRequires:  desktop-file-utils
@@ -100,6 +102,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Jul 21 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.1-5
+- Add BR for autoreconf
+
 * Sun Mar 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.1-4
 - Mass rebuilt for Fedora 19 Features
 
