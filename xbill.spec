@@ -1,6 +1,6 @@
 Name:           xbill
 Version:        2.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 
 Group:          Amusements/Games
@@ -102,6 +102,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Aug 31 2014 Sérgio Basto <sergio@serjux.com> - 2.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Sun Jul 21 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.1-5
 - Add BR for autoreconf
 
