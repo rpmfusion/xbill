@@ -1,6 +1,6 @@
 Name:           xbill
 Version:        2.1
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 
 Group:          Amusements/Games
@@ -102,6 +102,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Mar 05 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Sun Aug 19 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.1-11
 - Rebuilt for Fedora 29 Mass Rebuild binutils issue
 
