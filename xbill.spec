@@ -1,13 +1,13 @@
 Name:           xbill
 Version:        2.1
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 
-Group:          Amusements/Games
 License:        GPL+
 URL:            http://www.xbill.org/
 Source0:        http://www.xbill.org/download/%{name}-%{version}.tar.gz
 Source1:        %{name}.desktop
+Source2:        %{name}.appdata.xml
 # Gentoo 201214
 Patch0:         %{name}-2.1-gtk2.patch
 # Debian
@@ -15,13 +15,13 @@ Patch1:         %{name}-2.1-hurd_logos.patch
 # Andrea Musuruane
 Patch2:         %{name}-2.1-score.patch
 Patch3:         %{name}-2.1-dropsgid.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+BuildRequires:  gcc
 BuildRequires:  libtool
-
 BuildRequires:  gtk2-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  ImageMagick
+BuildRequires:  libappstream-glib
 Requires:       hicolor-icon-theme
 
 
@@ -45,52 +45,37 @@ and it is very popular at Red Hat.
 
 %build
 autoreconf
-%configure --disable-motif \
+%configure \
+  --disable-motif \
   --localstatedir=%{_localstatedir}/games
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 #install man page
 install -d %{buildroot}%_mandir/man6
-install -m 644 %{name}.6 %{buildroot}%{_mandir}/man6
+install -p -m 644 %{name}.6 %{buildroot}%{_mandir}/man6
 
 # install desktop file
-mkdir -p %{buildroot}%{_datadir}/applications
-desktop-file-install --vendor '' \
+install -d %{buildroot}%{_datadir}/applications
+desktop-file-install \
   --dir %{buildroot}%{_datadir}/applications \
   %{SOURCE1}
 
 # install icon
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
+install -d %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
 convert -resize x48 %{name}.gif \
   %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-
-%post
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-
-%postun
-if [ $1 -eq 0 ] ; then
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+# install AppData file
+install -d %{buildroot}%{_datadir}/metainfo
+install -p -m 644 %{SOURCE2} %{buildroot}%{_datadir}/metainfo
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata.xml
 
 
 %files
-%defattr(-,root,root,-)
 %attr(2755,root,games) %{_bindir}/%{name}
 %{_localstatedir}/games/%{name}
 %attr(0664,root,games) %config(noreplace) %{_localstatedir}/games/%{name}/scores
@@ -98,10 +83,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man6/%{name}.6*
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/metainfo/%{name}.appdata.xml
 %doc ChangeLog README
 
 
 %changelog
+* Fri Aug 02 2019 Andrea Musuruane <musuruan@gmail.com> - 2.1-13
+- Added gcc dependency
+- Added AppData file
+- Spec file cleanup
+
 * Tue Mar 05 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 

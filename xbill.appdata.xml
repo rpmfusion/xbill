@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2019 Andrea Musuruane <musuruan@gmail.com -->
+<component type="desktop">
+  <id>xbill.desktop</id>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
+  <project_license>GPL+</project_license>
+  <name>XBill</name>
+  <summary>Stop Bill from loading his OS into all the computers</summary>
+  <description>
+    <p>
+         Ever get the feeling that nothing is going right? You're a sysadmin,
+         and someone's trying to destroy your computers. The little people
+         running around the screen are trying to infect your computers with
+         Wingdows [TM], a virus cleverly designed to resemble a popular
+         operating system. Your objective is to click the mouse on them, 
+         ending the potential threat.  If one of the people reaches a 
+         computer, it will attempt to replace your operating system with the
+         virus it carries. It will then attempt to run off the screen with
+         your vital software.  
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+    </screenshot>
+  </screenshots>
+  <url type="homepage">http://www.xbill.org</url>
+</component>
