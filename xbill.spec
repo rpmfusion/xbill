@@ -1,9 +1,8 @@
 Name:           xbill
 Version:        2.1
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
-
-License:        GPL+
+License:        GPL-1.0-or-later
 URL:            http://www.xbill.org/
 Source0:        http://www.xbill.org/download/%{name}-%{version}.tar.gz
 Source1:        %{name}.desktop
@@ -15,6 +14,11 @@ Patch1:         %{name}-2.1-hurd_logos.patch
 # Andrea Musuruane
 Patch2:         %{name}-2.1-score.patch
 Patch3:         %{name}-2.1-dropsgid.patch
+
+# These aren't real fixes (waiting upstream for this)
+# Just a way to accommodate C code generators.
+# See https://gcc.gnu.org/gcc-14/porting_to.html
+Patch4:         %{name}-gcc14.patch
 
 BuildRequires:  gcc
 BuildRequires:  libtool
@@ -35,16 +39,16 @@ and it is very popular at Red Hat.
 
 %prep
 %setup -q
-%patch0 -p0
-%patch1 -p1
+%patch -P 0 -p0 -b .backup
+%patch -P 1 -p1 -b .backup
 # Patch2 must be applied before patch3
-%patch2 -p1
-%patch3 -p1
-
+%patch -P 2 -p1 -b .backup
+%patch -P 3 -p1 -b .backup
+%patch -P 4 -p1 -b .backup
 
 
 %build
-autoreconf
+autoreconf -ivf
 %configure \
   --disable-motif \
   --localstatedir=%{_localstatedir}/games
@@ -76,18 +80,23 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 
 
 %files
-%attr(2755,root,games) %{_bindir}/%{name}
-%{_localstatedir}/games/%{name}
-%attr(0664,root,games) %config(noreplace) %{_localstatedir}/games/%{name}/scores
-%{_datadir}/%{name}
+%{_datadir}/%{name}/
 %{_mandir}/man6/%{name}.6*
 %{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/metainfo/%{name}.appdata.xml
 %doc ChangeLog README
+%defattr(2755,root,games)
+%{_bindir}/%{name}
+%defattr(0664,root,games)
+%config(noreplace) %{_localstatedir}/games/%{name}/scores
 
 
 %changelog
+* Sat Mar 09 2024 Antonio Trande <sagitter@fedoraproject.org> - 2.1-23
+- Patched for GCC14
+- Use %%defattr macros
+
 * Sun Feb 04 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.1-22
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
