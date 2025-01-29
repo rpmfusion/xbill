@@ -1,6 +1,6 @@
 Name:           xbill
 Version:        2.1
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 License:        GPL-1.0-or-later
 URL:            http://www.xbill.org/
@@ -93,6 +93,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 
 
 %changelog
+* Wed Jan 29 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.1-25
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
 * Fri Aug 02 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.1-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
