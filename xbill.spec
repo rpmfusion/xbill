@@ -27,6 +27,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  ImageMagick
 BuildRequires:  libappstream-glib
 Requires:       hicolor-icon-theme
+Requires:       gdk-pixbuf2-modules-extra
 
 
 %description
@@ -95,6 +96,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 %changelog
 * Mon Feb 02 2026 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.1-27
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
+- (rfbz #7391) xbill fails to start without gdk-pixbuf2-modules-extra
 
 * Sun Jul 27 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 2.1-26
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
