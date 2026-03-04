@@ -1,24 +1,22 @@
 Name:           xbill
 Version:        2.1
-Release:        28%{?dist}
+Release:        29%{?dist}
 Summary:        Stop Bill from loading his OS into all the computers
 License:        GPL-1.0-or-later
 URL:            http://www.xbill.org/
 Source0:        http://www.xbill.org/download/%{name}-%{version}.tar.gz
 Source1:        %{name}.desktop
 Source2:        %{name}.appdata.xml
-# Gentoo 201214
+# Compile against GTK2
+# https://github.com/alistairmcmillan/Xbill/commit/086b52b82f6a3b415651c4482b02225c92e20c6d
 Patch0:         %{name}-2.1-gtk2.patch
 # Debian
 Patch1:         %{name}-2.1-hurd_logos.patch
 # Andrea Musuruane
 Patch2:         %{name}-2.1-score.patch
 Patch3:         %{name}-2.1-dropsgid.patch
-
-# These aren't real fixes (waiting upstream for this)
-# Just a way to accommodate C code generators.
-# See https://gcc.gnu.org/gcc-14/porting_to.html
-Patch4:         %{name}-gcc14.patch
+# Gentoo
+Patch4:         %{name}-2.1-gcc14.patch
 
 BuildRequires:  gcc
 BuildRequires:  libtool
@@ -40,7 +38,7 @@ and it is very popular at Red Hat.
 
 %prep
 %setup -q
-%patch -P 0 -p0 -b .backup
+%patch -P 0 -p1 -b .backup
 %patch -P 1 -p1 -b .backup
 # Patch2 must be applied before patch3
 %patch -P 2 -p1 -b .backup
@@ -94,6 +92,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 
 
 %changelog
+* Wed Mar 04 2026 Andrea Musuruane <musuruan@gmail.com> - 2.1-29
+- Proper patches for GCC14
+
 * Wed Feb 18 2026 Sérgio Basto <sergio@serjux.com> - 2.1-28
 - (rfbz #7391) xbill fails to start without gdk-pixbuf2-modules-extra
 
